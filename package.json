@@ -1,14 +1,19 @@
 {
-  "name": "proxy-server",
-  "version": "1.0.0",
-  "description": "A proxy server for bypassing Google restrictions",
-  "main": "server.js",
   "dependencies": {
-    "express": "^4.17.1",
-    "axios": "^1.3.0",
-    "cors": "^2.8.5"
+    "axios": "^1.8.1",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "request": "^2.88.2"
   },
+  "name": "school-helper-extension",
+  "version": "1.0.0",
+  "main": "background.js",
   "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
-  }
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }
