@@ -1,34 +1,38 @@
 const express = require("express");
-const request = require("request");
+const axios = require("axios");
 const cors = require("cors");
 
 const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 10000;
 
 app.use(cors());
 
-// Basic test route
+// Basic route to check server
 app.get("/", (req, res) => {
     res.send("Proxy Server is Running!");
 });
 
-// Google Search Proxy route
-app.get("/search", (req, res) => {
+// Google Search Proxy Route
+app.get("/search", async (req, res) => {
     const query = req.query.q;
     if (!query) {
         return res.status(400).send("Missing search query.");
     }
 
-    // Construct the URL to Google search
     const googleSearchURL = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
 
-    // Send a request to Google
-    request(googleSearchURL, (error, response, body) => {
-        if (error) {
-            return res.status(500).send("Error fetching Google results.");
-        }
-        res.send(body); // Send the HTML response back to the user
-    });
+    try {
+        // Adding timeout to prevent it from hanging indefinitely
+        const response = await axios.get(googleSearchURL, {
+            headers: { 'User-Agent': 'Mozilla/5.0' },
+            timeout: 10000, // 10 seconds timeout
+        });
+        res.send(response.data); // Send the search results from Google
+    } catch (error) {
+        // Log the error for debugging
+        console.error("Error fetching Google results:", error.message);
+        res.status(500).send("Error fetching Google results.");
+    }
 });
 
 // Start the server
